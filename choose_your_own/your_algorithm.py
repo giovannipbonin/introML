@@ -31,11 +31,14 @@ plt.show()
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
+from sklearn.ensemble import AdaBoostClassifier
+import sklearn.tree as tree
+import sklearn.metrics as metrics
 
-
-
-
-
+clf = AdaBoostClassifier(tree.DecisionTreeClassifier(criterion='gini', min_samples_split=40), n_estimators=150)
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+print metrics.accuracy_score(labels_test, pred)
 
 
 try:
