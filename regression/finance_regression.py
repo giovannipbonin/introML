@@ -29,7 +29,7 @@ target, features = targetFeatureSplit( data )
 from sklearn.cross_validation import train_test_split
 feature_train, feature_test, target_train, target_test = train_test_split(features, target, test_size=0.5, random_state=42)
 train_color = "b"
-test_color = "b"
+test_color = "r"
 
 
 
@@ -40,7 +40,10 @@ test_color = "b"
 
 
 
+import sklearn.linear_model as linear_model
 
+reg = linear_model.LinearRegression()
+reg = reg.fit(feature_train, target_train)
 
 
 
@@ -57,13 +60,42 @@ plt.scatter(feature_test[0], target_test[0], color=test_color, label="test")
 plt.scatter(feature_test[0], target_test[0], color=train_color, label="train")
 
 
+## Collect long_term_incentive data
 
+features_list2 = ["bonus", "long_term_incentive"]
+data2 = featureFormat( dictionary, features_list2, remove_any_zeroes=True)
+target2, features2 = targetFeatureSplit( data2 )
+feature_train2, feature_test2, target_train2, target_test2 = train_test_split(features2, target2, test_size=0.5, random_state=42)
+
+# Create regression model 2
+
+reg2 = linear_model.LinearRegression()
+reg2 = reg2.fit(feature_train2, target_train2)
+
+# score model 2
+
+print reg2.score(feature_test2, target_test2)
+
+
+# Get slope and intercept
+print reg.coef_[0]
+print reg.intercept_
+
+# Get score on training set
+print reg.score(feature_train, target_train)
+
+# Get score on test set
+print reg.score(feature_test, target_test)
 
 ### draw the regression line, once it's coded
 try:
     plt.plot( feature_test, reg.predict(feature_test) )
 except NameError:
     pass
+
+reg.fit(feature_test, target_test)
+plt.plot(feature_train, reg2.predict(feature_train), color="b") 
+print reg.coef_[0]
 plt.xlabel(features_list[1])
 plt.ylabel(features_list[0])
 plt.legend()
