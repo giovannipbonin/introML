@@ -10,11 +10,11 @@ def outlierCleaner(predictions, ages, net_worths):
         Return a list of tuples named cleaned_data where 
         each tuple is of the form (age, net_worth, error).
     """
-    
-    cleaned_data = []
-
     ### your code goes here
-
+    residual = abs(predictions - net_worths)[:, 0]
+    a = ages[:, 0]
+    n = net_worths[:, 0]
+    keepN = len(ages) - len(ages)*0.1
+    partition = numpy.argpartition(residual, keepN)
+    return zip(a[partition][:keepN], n[partition][:keepN], residual[partition][:keepN])
     
-    return cleaned_data
-
